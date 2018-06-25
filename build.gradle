@@ -1,0 +1,30 @@
+buildscript {
+    ext.kotlin_version = '1.2.50'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+ext {
+    jUnitVersion = '5.2.0'
+    mockitoVersion = '2.18.3'
+    assertjVersion = '3.10.0'
+
+    def buildTimeAndDate = new Date()
+    buildDate = buildTimeAndDate.format("yyyy-MM-dd")
+    buildTime = buildTimeAndDate.format("HH:mm:ss.SSSZ")
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.8'
+}

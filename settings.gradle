@@ -1,0 +1,5 @@
+rootProject.name = 'client-stub'
+include 'client-stub-core'
+include 'client-stub-jersey1'
+include 'client-stub-jersey2'
+
