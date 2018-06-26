@@ -10,10 +10,9 @@ import com.github.simy4.stub.core.pattern.RegexPattern
 import com.github.simy4.stub.core.pattern.StartsWithPattern
 import kotlin.jvm.JvmName
 
-@StubDslMarker
-open class PatternDsl<A> {
+open class PatternDsl<A>: StubDsl<Pattern<A>> {
     private val patterns = mutableListOf<Pattern<A>>()
-    internal val pattern: Pattern<A>
+    override val result: Pattern<A>
         get() = Pattern.any(patterns.toList())
 
     operator fun A.unaryPlus() {
@@ -27,7 +26,7 @@ open class PatternDsl<A> {
 
 open class MapPatternDsl<A: Any>: PatternDsl<Map<String, A>>() {
     infix fun String.oneOf(init: PatternDsl<A>.() -> Unit) {
-        initPattern(init, PatternDsl()).also { pattern -> matches(MapEntryPattern(this, pattern)) }
+        initDsl(init, PatternDsl()).also { pattern -> matches(MapEntryPattern(this, pattern)) }
     }
 
     operator fun Pair<String, A>.unaryPlus() {
@@ -37,7 +36,7 @@ open class MapPatternDsl<A: Any>: PatternDsl<Map<String, A>>() {
 
 open class MultimapPatternDsl<A: Any>: MapPatternDsl<Collection<A>>() {
     infix fun String.hasItems(init: PatternDsl<A>.() -> Unit) {
-        initPattern(init, PatternDsl()).also { pattern ->
+        initDsl(init, PatternDsl()).also { pattern ->
             matches(MapEntryPattern(this, ContainsPattern(pattern)))
         }
     }
@@ -53,9 +52,6 @@ open class BodyPatternDsl: PatternDsl<Any?>() {
         matches(MatchingSafelyPattern(pattern))
     }
 }
-
-internal fun <P: PatternDsl<A>, A> initPattern(init: P.() -> Unit, dsl: P): Pattern<A> =
-        dsl.init().let { dsl.pattern }
 
 fun PatternDsl<String>.matches(pattern: String) {
     matches(RegexPattern(pattern))

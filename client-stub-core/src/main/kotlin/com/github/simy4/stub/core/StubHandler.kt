@@ -2,21 +2,18 @@ package com.github.simy4.stub.core
 
 import com.github.simy4.stub.core.dsl.MethodStubDsl
 import com.github.simy4.stub.core.dsl.ResponseSupplierDsl
+import com.github.simy4.stub.core.dsl.initDsl
 import com.github.simy4.stub.core.pattern.ExactMatch
 import com.github.simy4.stub.core.session.StubSession
 
 abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, ResponseT> {
 
     fun stub(init: MethodStubDsl.() -> Unit): MethodStub {
-        val dsl = MethodStubDsl(this)
-        dsl.init()
-        return dsl.methodStub
+        return initDsl(init, MethodStubDsl(this))
     }
 
     fun stubDefault(init: ResponseSupplierDsl.() -> Unit) {
-        val dsl = ResponseSupplierDsl()
-        dsl.init()
-        StubSession.sessionFor(this).defaultStub = dsl.supplier
+        StubSession.sessionFor(this).defaultStub = initDsl(init, ResponseSupplierDsl())
     }
 
     operator fun invoke(requestT: RequestT): Attempt<ResponseT> =

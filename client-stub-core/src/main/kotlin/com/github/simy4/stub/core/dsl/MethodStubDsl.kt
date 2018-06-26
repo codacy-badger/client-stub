@@ -9,14 +9,10 @@ import com.github.simy4.stub.core.Response
 import com.github.simy4.stub.core.pattern.Pattern
 import com.github.simy4.stub.core.session.StubSession
 
-@DslMarker
-annotation class StubDslMarker
-
-@StubDslMarker
-class MethodStubDsl internal constructor(private val stubHandler: StubHandler<*, *>) {
+class MethodStubDsl internal constructor(private val stubHandler: StubHandler<*, *>): StubDsl<MethodStub> {
     private var request: Pattern<Request> = Pattern.none()
     private var response: (Request) -> Attempt<Response> = { Success(Response(404, emptyMap(), null)) }
-    internal val methodStub: MethodStub
+    override val result: MethodStub
         get() {
             val methodStub = MethodStub(stubHandler, request, response)
             StubSession.sessionFor(stubHandler).stub(methodStub)
@@ -24,15 +20,11 @@ class MethodStubDsl internal constructor(private val stubHandler: StubHandler<*,
         }
 
     fun request(init: RequestPatternDsl.() -> Unit) {
-        val requestStub = RequestPatternDsl()
-        requestStub.init()
-        request = requestStub.request
+        request = initDsl(init, RequestPatternDsl())
     }
 
     fun response(init: ResponseSupplierDsl.() -> Unit) {
-        val responseDsl = ResponseSupplierDsl()
-        responseDsl.init()
-        response = responseDsl.supplier
+        response = initDsl(init, ResponseSupplierDsl())
     }
 
     fun supplier(supplier: (Request) -> Attempt<Response>) {

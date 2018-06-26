@@ -8,7 +8,9 @@ class MethodStub internal constructor(
         internal val requestPattern: Pattern<Request>,
         internal val responseSupplier: (Request) -> Attempt<Response>
 ) {
-    fun wasInvoked(): Boolean = !invocations().isEmpty()
+    val invoked: Boolean
+        get() = !invocations.isEmpty()
 
-    fun invocations(): List<Invocation> = StubSession.sessionFor(stubHandler).invocations(this)
+    val invocations: List<Invocation>
+        get() = StubSession.sessionFor(stubHandler).invocations(this)
 }

@@ -5,12 +5,11 @@ import com.github.simy4.stub.core.Success
 import com.github.simy4.stub.core.Request
 import com.github.simy4.stub.core.Response
 
-@StubDslMarker
-class ResponseSupplierDsl {
+class ResponseSupplierDsl: StubDsl<(Request) -> Attempt<Response>> {
     private var _status: Int = 404
     private var _headers: Map<String, Collection<String>> = mutableMapOf()
     private var _body: Any? = null
-    internal val supplier: (Request) -> Attempt<Response>
+    override val result: (Request) -> Attempt<Response>
         get() {
             val status = _status
             val headers = _headers
@@ -19,14 +18,14 @@ class ResponseSupplierDsl {
         }
 
     fun status(init: SupplierDsl<Int>.() -> Unit) {
-        _status = initSupplier(init, SupplierDsl<Int>(404))
+        _status = initDsl(init, SupplierDsl<Int>(404))
     }
 
     fun headers(init: MultimapSupplierDsl<String>.() -> Unit) {
-        _headers = initSupplier(init, MultimapSupplierDsl<String>())
+        _headers = initDsl(init, MultimapSupplierDsl<String>())
     }
 
     fun body(init: BodySupplierDsl.() -> Unit) {
-        _body = initSupplier(init, BodySupplierDsl())
+        _body = initDsl(init, BodySupplierDsl())
     }
 }
