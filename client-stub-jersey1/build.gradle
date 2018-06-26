@@ -3,9 +3,13 @@ apply from: rootProject.file('gradle/publish-jar.gradle')
 apply from: rootProject.file('gradle/publish-maven.gradle')
 
 dependencies {
-    expectedBy project(':client-stub-core')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile 'com.sun.jersey:jersey-client:1.19.4'
+
+    expectedBy project(':client-stub-core')
+
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 }
 
 compileKotlin {
@@ -13,4 +17,8 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+test {
+    useJUnitPlatform()
 }
