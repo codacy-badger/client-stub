@@ -3,9 +3,9 @@ package com.github.simy4.stub.jersey2
 import com.github.simy4.stub.core.Request
 import org.glassfish.jersey.client.ClientRequest
 
-internal object Jersey2RequestConverter {
+internal object Jersey2RequestConverter: (ClientRequest) -> Request {
 
-    operator fun invoke(clientRequest: ClientRequest): Request {
+    override fun invoke(clientRequest: ClientRequest): Request {
         val uri = clientRequest.uri
         val query = uri.query?.split('&')
                 ?.map { param -> param.indexOf('=').let { idx ->

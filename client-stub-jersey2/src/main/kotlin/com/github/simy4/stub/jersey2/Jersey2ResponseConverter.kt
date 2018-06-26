@@ -12,11 +12,11 @@ import javax.ws.rs.ProcessingException
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 
-internal object Jersey2ResponseConverter {
+internal object Jersey2ResponseConverter: (ClientRequest, Response) -> Attempt<ClientResponse> {
 
     private val DEFAULT_CONTENT_TYPE = MediaType.APPLICATION_OCTET_STREAM_TYPE
 
-    operator fun invoke(request: ClientRequest, response: Response): Attempt<ClientResponse> {
+    override fun invoke(request: ClientRequest, response: Response): Attempt<ClientResponse> {
         return Attempt { invoke0(request, response) }
     }
 

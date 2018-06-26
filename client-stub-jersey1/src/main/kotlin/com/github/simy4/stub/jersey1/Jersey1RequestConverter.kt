@@ -3,9 +3,9 @@ package com.github.simy4.stub.jersey1
 import com.github.simy4.stub.core.Request
 import com.sun.jersey.api.client.ClientRequest
 
-internal object Jersey1RequestConverter {
+internal object Jersey1RequestConverter: (ClientRequest) -> Request {
 
-    operator fun invoke(clientRequest: ClientRequest): Request {
+    override fun invoke(clientRequest: ClientRequest): Request {
         val uri = clientRequest.uri
         val query = uri.query?.split('&')
                 ?.map { param -> param.indexOf('=').let { idx ->

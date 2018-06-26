@@ -6,7 +6,7 @@ import com.github.simy4.stub.core.dsl.initDsl
 import com.github.simy4.stub.core.pattern.ExactMatch
 import com.github.simy4.stub.core.session.StubSession
 
-abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, ResponseT> {
+abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, ResponseT>, (RequestT) -> Attempt<ResponseT> {
 
     fun stub(init: MethodStubDsl.() -> Unit): MethodStub {
         return initDsl(init, MethodStubDsl(this))
@@ -16,7 +16,7 @@ abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, Re
         StubSession.sessionFor(this).defaultStub = initDsl(init, ResponseSupplierDsl())
     }
 
-    operator fun invoke(requestT: RequestT): Attempt<ResponseT> =
+    override fun invoke(requestT: RequestT): Attempt<ResponseT> =
             invoke0(requestT.inject).flatMap { it.project(requestT) }
 
     private fun invoke0(request: Request): Attempt<Response> {

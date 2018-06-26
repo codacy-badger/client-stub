@@ -19,11 +19,11 @@ import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.MultivaluedMap
 
-internal object Jersey1ResponseConverter {
+internal object Jersey1ResponseConverter: (ClientRequest, Response) -> Attempt<ClientResponse> {
 
     private val DEFAULT_CONTENT_TYPE = MediaType.APPLICATION_OCTET_STREAM_TYPE
 
-    operator fun invoke(request: ClientRequest, response: Response): Attempt<ClientResponse> {
+    override fun invoke(request: ClientRequest, response: Response): Attempt<ClientResponse> {
         return Attempt { invoke0(request, response) }
     }
 
