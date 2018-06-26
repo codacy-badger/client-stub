@@ -2,7 +2,7 @@ apply plugin: 'kotlin-platform-jvm'
 
 dependencies {
     expectedBy project(':client-stub-core')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile 'com.sun.jersey:jersey-client:1.19.4'
 }
 

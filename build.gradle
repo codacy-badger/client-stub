@@ -1,18 +1,10 @@
-buildscript {
-    ext.kotlin_version = '1.2.50'
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id "org.jetbrains.kotlin.jvm" version '1.2.50' apply false
+    id 'org.jmailen.kotlinter' version '1.13.0' apply false
 }
 
 ext {
-    jUnitVersion = '5.2.0'
-    mockitoVersion = '2.18.3'
-    assertjVersion = '3.10.0'
+    kotlinVersion = '1.2.50'
 
     def buildTimeAndDate = new Date()
     buildDate = buildTimeAndDate.format("yyyy-MM-dd")
@@ -20,6 +12,7 @@ ext {
 }
 
 subprojects {
+    apply plugin: 'org.jmailen.kotlinter'
     repositories {
         mavenCentral()
     }

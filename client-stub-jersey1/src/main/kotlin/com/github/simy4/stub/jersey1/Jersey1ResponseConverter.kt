@@ -85,15 +85,20 @@ internal object Jersey1ResponseConverter {
 
     private val ClientRequest.messageBodyWorkers: MessageBodyWorkers
         get() = properties[Client::class.java.canonicalName].let {
-            when(it) {
+            when (it) {
                 is Client -> it.messageBodyWorkers
                 else -> throw ClientHandlerException("Unable to find message body workers in request context")
             }
         }
 
     @Throws(ClientHandlerException::class, IOException::class)
-    private fun <T> MessageBodyWorkers.writeTo(t: T?, type: Class<T>, genericType: Type?,
-                                               headers: MultivaluedMap<String, Any>, outputStream: OutputStream): MediaType {
+    private fun <T> MessageBodyWorkers.writeTo(
+        t: T?,
+        type: Class<T>,
+        genericType: Type?,
+        headers: MultivaluedMap<String, Any>,
+        outputStream: OutputStream
+    ): MediaType {
         val acceptedMediaTypes = headers.getOrDefault(HttpHeaders.ACCEPT, listOf(DEFAULT_CONTENT_TYPE))
                 .map { value -> MediaType.valueOf(value.toString()) }
         val contentType = getMessageBodyWriterMediaType(type, genericType, emptyArray(), acceptedMediaTypes)
@@ -102,5 +107,4 @@ internal object Jersey1ResponseConverter {
         messageBodyWriter.writeTo(t, type, genericType, emptyArray(), contentType, headers, outputStream)
         return contentType
     }
-
 }

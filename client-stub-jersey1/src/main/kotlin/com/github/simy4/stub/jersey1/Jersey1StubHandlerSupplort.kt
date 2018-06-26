@@ -7,7 +7,7 @@ import com.github.simy4.stub.core.StubHandlerSupport
 import com.sun.jersey.api.client.ClientRequest
 import com.sun.jersey.api.client.ClientResponse
 
-interface Jersey1StubHandlerSupplort: StubHandlerSupport<ClientRequest, ClientResponse> {
+interface Jersey1StubHandlerSupplort : StubHandlerSupport<ClientRequest, ClientResponse> {
     override val ClientRequest.inject: Request
         get() = Jersey1RequestConverter(this)
 

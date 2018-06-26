@@ -7,7 +7,7 @@ import com.github.simy4.stub.core.StubHandlerSupport
 import org.glassfish.jersey.client.ClientRequest
 import org.glassfish.jersey.client.ClientResponse
 
-interface Jersey2StubHandlerSupplort: StubHandlerSupport<ClientRequest, ClientResponse> {
+interface Jersey2StubHandlerSupplort : StubHandlerSupport<ClientRequest, ClientResponse> {
     override val ClientRequest.inject: Request
         get() = Jersey2RequestConverter(this)
 

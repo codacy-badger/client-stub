@@ -10,9 +10,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 class StubConnector(
-        private val stubHandler: StubHandler<ClientRequest, ClientResponse>,
-        private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-): Connector {
+    private val stubHandler: StubHandler<ClientRequest, ClientResponse>,
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+) : Connector {
     override fun apply(request: ClientRequest): ClientResponse = stubHandler(request).run()
 
     override fun apply(request: ClientRequest, callback: AsyncConnectorCallback): Future<*> = executor.submit {

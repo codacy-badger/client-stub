@@ -63,5 +63,4 @@ internal object Jersey2ResponseConverter {
     private val ClientRequest.contentType
         get() = headers.getOrDefault(HttpHeaders.ACCEPT, emptyList()).firstOrNull()
                 ?.let { type -> MediaType.valueOf(type.toString()) } ?: DEFAULT_CONTENT_TYPE
-
 }
