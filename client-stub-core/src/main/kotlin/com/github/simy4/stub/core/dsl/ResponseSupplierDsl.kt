@@ -19,14 +19,14 @@ class ResponseSupplierDsl {
         }
 
     fun status(init: SupplierDsl<Int>.() -> Unit) {
-        _status = initSupplier(init, SupplierDsl(404))
+        _status = initSupplier(init, SupplierDsl<Int>(404))
     }
 
-    fun headers(init: SupplierDsl<Map<String, Collection<String>>>.() -> Unit) {
-        _headers = initSupplier(init, SupplierDsl<Map<String, Collection<String>>>(mutableMapOf()))
+    fun headers(init: MultimapSupplierDsl<String>.() -> Unit) {
+        _headers = initSupplier(init, MultimapSupplierDsl<String>())
     }
 
-    fun body(init: SupplierDsl<Any>.() -> Unit) {
-        _body = initSupplier(init, SupplierDsl<Any>(""))
+    fun body(init: BodySupplierDsl.() -> Unit) {
+        _body = initSupplier(init, BodySupplierDsl())
     }
 }
