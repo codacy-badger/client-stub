@@ -3,7 +3,7 @@ package com.github.simy4.stub.jersey2
 import com.github.simy4.stub.core.Request
 import org.glassfish.jersey.client.ClientRequest
 
-internal object Jersey2RequestConverter: (ClientRequest) -> Request {
+internal object Jersey2RequestConverter : (ClientRequest) -> Request {
 
     override fun invoke(clientRequest: ClientRequest): Request {
         val uri = clientRequest.uri

@@ -12,7 +12,7 @@ import javax.ws.rs.ProcessingException
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 
-internal object Jersey2ResponseConverter: (ClientRequest, Response) -> Attempt<ClientResponse> {
+internal object Jersey2ResponseConverter : (ClientRequest, Response) -> Attempt<ClientResponse> {
 
     private val DEFAULT_CONTENT_TYPE = MediaType.APPLICATION_OCTET_STREAM_TYPE
 
