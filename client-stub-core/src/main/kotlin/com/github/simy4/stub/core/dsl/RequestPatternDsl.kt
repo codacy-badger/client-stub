@@ -10,7 +10,7 @@ class RequestPatternDsl {
     private var pathPattern: Pattern<String> = Pattern.all()
     private var queryPattern: Pattern<Map<String, String>> = Pattern.all()
     private var headersPattern: Pattern<Map<String, Collection<String>>> = Pattern.all()
-    private var bodyPattern: Pattern<Any> = Pattern.all()
+    private var bodyPattern: Pattern<Any?> = Pattern.all()
     internal val request: Pattern<Request>
         get() = RequestPattern(methodPattern, pathPattern, queryPattern, headersPattern, bodyPattern)
 
@@ -30,7 +30,7 @@ class RequestPatternDsl {
         headersPattern = initPattern(init, MultimapPatternDsl<String>())
     }
 
-    fun body(init: PatternDsl<Any>.() -> Unit) {
+    fun body(init: PatternDsl<Any?>.() -> Unit) {
         bodyPattern = initPattern(init, BodyPatternDsl())
     }
 }

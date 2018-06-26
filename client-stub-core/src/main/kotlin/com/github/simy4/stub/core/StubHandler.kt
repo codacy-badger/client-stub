@@ -1,9 +1,8 @@
 package com.github.simy4.stub.core
 
 import com.github.simy4.stub.core.dsl.MethodStubDsl
+import com.github.simy4.stub.core.dsl.ResponseSupplierDsl
 import com.github.simy4.stub.core.pattern.ExactMatch
-import com.github.simy4.stub.core.pattern.NoMatch
-import com.github.simy4.stub.core.pattern.PartialMatch
 import com.github.simy4.stub.core.session.StubSession
 
 abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, ResponseT> {
@@ -12,6 +11,12 @@ abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, Re
         val dsl = MethodStubDsl(this)
         dsl.init()
         return dsl.methodStub
+    }
+
+    fun stubDefault(init: ResponseSupplierDsl.() -> Unit) {
+        val dsl = ResponseSupplierDsl()
+        dsl.init()
+        StubSession.sessionFor(this).defaultStub = dsl.supplier
     }
 
     operator fun invoke(requestT: RequestT): Attempt<ResponseT> =
@@ -28,9 +33,8 @@ abstract class StubHandler<RequestT, ResponseT>: StubHandlerSupport<RequestT, Re
                         session.recordInvocation(pair.second, Invocation(request, response))
                         response
                     }
-                    is PartialMatch -> TODO()
-                    is NoMatch -> null
-                }} ?: TODO()
+                    else -> null
+                }} ?: session.defaultStub(request)
     }
 
 }

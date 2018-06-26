@@ -11,7 +11,7 @@ import com.github.simy4.stub.core.pattern.StartsWithPattern
 import kotlin.jvm.JvmName
 
 @StubDslMarker
-open class PatternDsl<A: Any> {
+open class PatternDsl<A> {
     private val patterns = mutableListOf<Pattern<A>>()
     internal val pattern: Pattern<A>
         get() = Pattern.any(patterns.toList())
@@ -48,13 +48,13 @@ open class MultimapPatternDsl<A: Any>: MapPatternDsl<Collection<A>>() {
     }
 }
 
-open class BodyPatternDsl: PatternDsl<Any>() {
+open class BodyPatternDsl: PatternDsl<Any?>() {
     fun <T> matchesSafely(pattern: Pattern<T>) {
         matches(MatchingSafelyPattern(pattern))
     }
 }
 
-internal fun <P: PatternDsl<A>, A: Any> initPattern(init: P.() -> Unit, dsl: P): Pattern<A> =
+internal fun <P: PatternDsl<A>, A> initPattern(init: P.() -> Unit, dsl: P): Pattern<A> =
         dsl.init().let { dsl.pattern }
 
 fun PatternDsl<String>.matches(pattern: String) {

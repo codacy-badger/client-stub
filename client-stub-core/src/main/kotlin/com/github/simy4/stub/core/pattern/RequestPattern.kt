@@ -7,10 +7,9 @@ class RequestPattern(
         private val pathPattern: Pattern<String>,
         private val queryPattern: Pattern<Map<String, String>>,
         private val headersPattern: Pattern<Map<String, Collection<String>>>,
-        private val bodyPattern: Pattern<Any>
+        private val bodyPattern: Pattern<Any?>
 ): Pattern<Request> {
-    override fun invoke(request: Request): MatchResult {
-        methodPattern(request.method)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun invoke(request: Request): MatchResult =
+            Weighted(pathPattern(request.path), 10.0) and Weighted(methodPattern(request.method), 5.0) and
+                    queryPattern(request.query) and headersPattern(request.headers) and bodyPattern(request.body)
 }

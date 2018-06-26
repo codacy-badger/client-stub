@@ -4,9 +4,9 @@ class EquivPattern<in A>(private val match: A): Pattern<A> {
     override fun invoke(value: A): MatchResult = MatchResult.match(match == value)
 }
 
-class MatchingSafelyPattern<in A>(private val pattern: Pattern<A>): Pattern<Any> {
+class MatchingSafelyPattern<in A>(private val pattern: Pattern<A>): Pattern<Any?> {
     @Suppress("UNCHECKED_CAST")
-    override fun invoke(value: Any): MatchResult =
+    override fun invoke(value: Any?): MatchResult =
             try { pattern(value as A) }
             catch (cce: ClassCastException) { NoMatch }
 }

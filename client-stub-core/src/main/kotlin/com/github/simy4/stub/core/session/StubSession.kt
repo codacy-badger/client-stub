@@ -1,12 +1,18 @@
 package com.github.simy4.stub.core.session
 
+import com.github.simy4.stub.core.Attempt
 import com.github.simy4.stub.core.Invocation
 import com.github.simy4.stub.core.MethodStub
+import com.github.simy4.stub.core.Request
+import com.github.simy4.stub.core.Response
 import com.github.simy4.stub.core.StubHandler
+import com.github.simy4.stub.core.Success
 
 interface StubSession {
 
     val stubs: List<MethodStub>
+
+    var defaultStub: (Request) -> Attempt<Response>
 
     fun stub(methodStub: MethodStub)
 
@@ -49,6 +55,10 @@ interface StubSession {
                             return currentSessionStubs + parentSessionStubs
                         }
                     }
+
+                override var defaultStub: (Request) -> Attempt<Response> = {
+                    Success(Response(404, emptyMap(), null))
+                }
 
                 override fun stub(methodStub: MethodStub) {
                     synchronized(registry) {

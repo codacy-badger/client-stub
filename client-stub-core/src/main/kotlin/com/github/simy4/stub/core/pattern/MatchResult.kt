@@ -13,7 +13,7 @@ sealed class MatchResult: Comparable<MatchResult> {
         }
     }
 
-    protected abstract val distance: Double
+    abstract val distance: Double
 
     infix fun and(other: MatchResult): MatchResult = if (this <= other) other else this
 
@@ -30,4 +30,8 @@ data class PartialMatch(override val distance: Double): MatchResult()
 
 object NoMatch: MatchResult() {
     override val distance: Double = Double.POSITIVE_INFINITY
+}
+
+internal data class Weighted(val result: MatchResult, val weight: Double = 1.0): MatchResult() {
+    override val distance: Double = result.distance * weight
 }
