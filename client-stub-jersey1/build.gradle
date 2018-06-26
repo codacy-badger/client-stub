@@ -1,4 +1,6 @@
 apply plugin: 'kotlin-platform-jvm'
+apply from: rootProject.file('gradle/publish-jar.gradle')
+apply from: rootProject.file('gradle/publish-maven.gradle')
 
 dependencies {
     expectedBy project(':client-stub-core')
